@@ -76,3 +76,8 @@ contextType // 一个 context 值的时候可以使用
     useMemo useCallback 会根据依赖是否变化执行函数,一定要注意的是依赖不变化，不一定不执行
 
     setValue在useMemo中可以不写依赖，直接用参数setValue(value=>value+1)
+    
+## hooks useRef
+
+    获取子组件或者dom节点的句柄
+    渲染周期之间共享数据的存储
