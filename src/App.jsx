@@ -1,102 +1,81 @@
-import React, {
-  useState,
-  useContext,
-  createContext,
-  Component,
-  PureComponent,
-  useRef,
-  useMemo,
-  memo,
-  useCallback,
-  useEffect
-} from "react";
+import React, { useState, PureComponent, useCallback, useEffect } from "react";
 // import logo from "./logo.svg";
 import "./App.css";
 
-// function Counter(props) { // 即使counter没有变化，也会每次都渲染（执行函数）
-//   console.log('counter render')
-//   return <h2>{JSON.stringify(props)}</h2>;
-// }
-
-// const Counter = memo(function Counter(props) {
-//   // memo 就是优化渲染的作用, 但是有click监听函数的时候，又导致每次都渲染了，需要给监听的函数加useMemo
-//   console.log("counter render");
-//   return (
-//     <h2
-//       onClick={() => {
-//         props.click();
-//       }}
-//       style={{ width: "100px", height: "100px", border: "1px solid red" }}
-//     >
-//       {JSON.stringify(props)}
-//     </h2>
-//   );
-// });
-
-class Counter extends PureComponent {
-  speak() {
-    console.log("speak");
-  }
-  render() {
-    const { props } = this;
-    return (
-      <h2
-        onClick={props.click}
-        style={{ width: "100px", height: "100px", border: "1px solid red" }}
-      >
-        {JSON.stringify(props)}
-      </h2>
-    );
-  }
+// 自定义hook函数 use开头 抽离组件逻辑
+function useCount(defaultProps) {
+  const [count, setCount] = useState(defaultProps);
+  return [count, setCount];
 }
 
-function App(props) {
-  const [count, setCount] = useState(0);
-  const [value, setValue] = useState(1);
-  const counterRef = useRef();
-  let it = useRef();
+// 返回 jsx, 用hooks参数代替props传递参数
+function useCounter(count) {
+  const  size = useSize()
+  return (
+    <h2 style={{ width: "100px", height: "100px", border: "1px solid red" }}>
+      {JSON.stringify(count)} {JSON.stringify(size)}
+    </h2>
+  );
+}
 
-  const double = useMemo(() => {
-    return count * 2;
-  }, [count === 3]);
+function useSize() {
+  const [size, setSize] = useState({
+    width: document.documentElement.clientWidth,
+    height: document.documentElement.clientHeight
+  });
 
-  // const onclick = useMemo(() => {
-  //   console.log("click");
-  // }, []);
-
-  // useMemo(()=>fn) 就是 useCallback(fn)
-
-  const onclick = useCallback(() => {
-    setValue(count + 2);
-    setValue(value => value + 1);
-
-    counterRef.current.speak();
-  }, [counterRef]);
+  const onResize = useCallback(() => { // 如果不加 useCallback 会多次执行
+    console.log('render')
+    setSize({
+      width: document.documentElement.clientWidth,
+      height: document.documentElement.clientHeight
+    });
+  }, [])
 
   useEffect(() => {
-    it.current = setInterval(() => { // 不用ref的话app每次渲染都会执行赋值，it就是一个新的值
-      setCount(count => count + 1);
-    }, 100);
+    window.addEventListener("resize", onResize, false);
+
+    return () => {
+      window.removeEventListener("resize", onResize, false);
+    };
   }, []);
 
-  useEffect(() => {
-    if (count > 10) {
-      clearInterval(it.current);
-    }
-  });
+  return size
+}
+
+// class Counter extends PureComponent {
+//   speak() {
+//     console.log("speak");
+//   }
+//   render() {
+//     const { props } = this;
+//     return (
+//       <h2
+//         style={{ width: "100px", height: "100px", border: "1px solid red" }}
+//       >
+//         {JSON.stringify(props)}
+//       </h2>
+//     );
+//   }
+// }
+
+function App(props) {
+  const [count, setCount] = useCount(0); // 普通hooks
+  const Counter = useCounter(count); // 返回jsx
+  const size = useSize() // 逻辑复用
 
   return (
     <div className="App">
       <button
         onClick={() => {
           setCount(count + 1);
-          setValue(value + 1);
         }}
       >
         +1
       </button>
-      double:{count}
-      <Counter count={count} ref={counterRef} click={onclick} value={value} />
+      count:{count}
+      {Counter} {size.width} {size.height}
+      {/*<Counter count={count} />*/}
     </div>
   );
 }
