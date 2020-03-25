@@ -25,7 +25,6 @@ function useSize() {
   });
 
   const onResize = useCallback(() => { // 如果不加 useCallback 会多次执行
-    console.log('render')
     setSize({
       width: document.documentElement.clientWidth,
       height: document.documentElement.clientHeight

@@ -81,3 +81,9 @@ contextType // 一个 context 值的时候可以使用
 
     获取子组件或者dom节点的句柄
     渲染周期之间共享数据的存储
+    
+## 自定义 hooks
+
+    use开头的函数
+    可以逻辑复用，也可以返回jsx
+    函数可以用usecallback优化 
