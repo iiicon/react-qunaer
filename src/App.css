@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+.todo-list {
+  width: 500px;
+  margin: 20px auto;
+  box-shadow: 0 2px 4px orangered;
+}
+
+label.complete {
+  text-decoration: line-through;
+}
+
