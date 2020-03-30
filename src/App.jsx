@@ -1,19 +1,25 @@
-import React, { useState, useCallback, useEffect, useRef, memo } from "react";
-import { createAdd, createRemove, createSet, createToggle } from "./actions";
+import React, {useState, useCallback, useEffect, useRef, memo} from "react";
+import {createAdd, createRemove, createSet, createToggle} from "./actions";
 import reducer from "./reducers";
 // import logo from "./logo.svg";
 import "./App.css";
 
-let store = {
+let store = { // 全局存储 state
   todos: [],
   incrementCount: 0
 };
 
+/**
+ * 遍历actionCreators对象 生成action 触发dispatch
+ * @param actionsCreators  {{add: createAdd}}
+ * @param dispatch
+ * @returns {{add: addTodo}}
+ */
 function bindActionCreators(actionsCreators, dispatch) {
   const result = {};
 
   for (let key in actionsCreators) {
-    result[key] = function(...args) {
+    result[key] = function (...args) {
       dispatch(actionsCreators[key](...args));
     };
   }
@@ -22,7 +28,7 @@ function bindActionCreators(actionsCreators, dispatch) {
 }
 
 const Control = memo(function Control(props) {
-  const { addTodo } = props;
+  const {addTodo} = props;
   const inputRef = useRef();
   const onSubmit = e => {
     e.preventDefault();
@@ -50,7 +56,7 @@ const Control = memo(function Control(props) {
 
 const TodoItem = memo(function TodoItem(props) {
   const {
-    todo: { id, text, complete },
+    todo: {id, text, complete},
     removeTodo,
     toggleTodo
   } = props;
@@ -63,7 +69,7 @@ const TodoItem = memo(function TodoItem(props) {
 
   return (
     <li className="todo-item">
-      <input type="checkbox" onChange={onChange} checked={complete} />
+      <input type="checkbox" onChange={onChange} checked={complete}/>
       <label htmlFor="" className={complete ? "complete" : ""}>
         {text}
       </label>
@@ -73,7 +79,7 @@ const TodoItem = memo(function TodoItem(props) {
 });
 
 const Todos = memo(function Todos(props) {
-  const { todos, removeTodo, toggleTodo } = props;
+  const {todos, removeTodo, toggleTodo} = props;
 
   return (
     <div>
@@ -98,11 +104,11 @@ function App(props) {
   const [incrementCount, setIncrementCount] = useState(0);
 
   useEffect(() => {
-    Object.assign(store, { todos, incrementCount });
+    Object.assign(store, {todos, incrementCount});
   }, [todos, incrementCount]);
 
   const dispatch = action => {
-    const setter = { todos: setTodos, incrementCount: setIncrementCount };
+    const setter = {todos: setTodos, incrementCount: setIncrementCount};
 
     if (typeof action === "function") {
       action(dispatch, () => store);
@@ -125,11 +131,11 @@ function App(props) {
 
   return (
     <div className="todo-list">
-      <Control {...bindActionCreators({ addTodo: createAdd }, dispatch)} />
+      <Control {...bindActionCreators({addTodo: createAdd}, dispatch)} />
       <Todos
         todos={todos}
         {...bindActionCreators(
-          { removeTodo: createRemove, toggleTodo: createToggle },
+          {removeTodo: createRemove, toggleTodo: createToggle},
           dispatch
         )}
       />

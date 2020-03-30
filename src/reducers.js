@@ -1,3 +1,8 @@
+/**
+ * 把state拆分，返回reducer函数，用来执行解构的reducer(state, action), 也类似于 vuex 的 module
+ * @param reducers
+ * @returns {function(*, *=): *}
+ */
 function combineReducers(reducers) {
   return function reducer(state, action) {
     const changed = {};
