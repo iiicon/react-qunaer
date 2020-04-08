@@ -111,9 +111,9 @@ function App(props) {
             </div>
             <form action="./query.html" className="form">
                 <Journey from={from} to={to} {...cbs} />
-                {/* <DepartDate time={departDate} {...departDateCbs} /> */}
-                {/* <HighSpeed highSpeed={highSpeed} {...highSpeedCbs} /> */}
-                {/* <Submit /> */}
+                <DepartDate time={departDate} {...departDateCbs} />
+                <HighSpeed highSpeed={highSpeed} {...highSpeedCbs} />
+                <Submit />
             </form>
             <CitySelector
                 show={isCitySelectorVisible}
@@ -121,11 +121,11 @@ function App(props) {
                 isLoading={isLoadingCityData}
                 {...citySelectorCbs}
             />
-            {/* <DateSelector
+            <DateSelector
                 show={isDateSelectorVisible}
                 {...dateSelectorCbs}
                 onSelect={onSelectDate}
-            /> */}
+            />
         </div>
     );
 }

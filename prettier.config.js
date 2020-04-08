@@ -1,5 +1,6 @@
 module.exports = {
-    tabWidth: 2,
+    tabWidth: 4,
     singleQuote: true,
     trailingComma: 'es5',
+    loglevel: 'log',
 };
