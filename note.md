@@ -47,9 +47,12 @@ contextType // 一个 context 值的时候可以使用
 
 选择内容的快捷键很重要
 
+多行编辑（win）
+多行光标 自己配的 clone caret above`ctrl alt ↑` 和 clone caret below`ctrl alt ↓`
+
 ## 问题
 
-- ~~事件用箭头函数~~
+-   ~~事件用箭头函数~~
 
 ## hooks useState
 
@@ -120,20 +123,20 @@ contextType // 一个 context 值的时候可以使用
 
 ## vue 和 react 的一些区别
 
-- vue 子组件触发父组件事件要 trigger react 直接调用父组件传过来的属性
+-   vue 子组件触发父组件事件要 trigger react 直接调用父组件传过来的属性
 
-- 有 set toogle remove 等事件类型，传递到对应子组件执行
-- 用 dispatch 做中间函数，传递 action 进来，触发 setTodo, 向下传递的函数都改成 dispatch
-- 每一次都要构造一个 action 对象，有点烦，我们写函数创造 action
-- 把 action 替换之后我们发现，比如 addTodo 就是 dispatch(createAdd(payload))
-  我们可以把这一步写成一个函数 addTodo = (payload) => dispatch(createAdd(payload))
-  我用需要用一个函数实现封装，这个函数接受一个 createAction 的对象和 dispatch 函数，返回对应的操作函数
-  这样我们就把 dispatch 这一步也省略了
-- 因为刚开始只有一个 todos 的属性，新增了之后我们现在还是以 action 的维度，这样有点复杂，我们可以改成数据的维度
-  首先我们抽离一个 reducer 函数，这个函数接受全部数据 state 和 action 参数，返回新的 state，根据不同的 type 操作不同数据放到这里
-- 接着我们写一个 reducers 是一个 hash 表示不同的数据有不同的 reducer，我们用一个 combineReducers 函数返回 REDUCER 函数，
-  在这个函数内部我们遍历 reducers，执行不同的 reducer 函数，最后返回合并后的 state，最后我们把这个 REDUCER 函数导出
-- 到现在为止，我们有两个文件一个 actions 用来创建不同的 action，一个 reducers 生成 reducer 函数，这样
-  我们在父组件中根据不同的 createAction 函数和 dispatch 就可以组合成自己的 add remove toggle 等函数，
-  传给子组件使用，我们在 dispatch 中实现的逻辑就是遍历最新的 state 去 setHooks 就可以了
-- 异步 actions 需要自己获取最新的 state，我们可以用全局变量 store 来保存，用函数获取就可以
+-   有 set toogle remove 等事件类型，传递到对应子组件执行
+-   用 dispatch 做中间函数，传递 action 进来，触发 setTodo, 向下传递的函数都改成 dispatch
+-   每一次都要构造一个 action 对象，有点烦，我们写函数创造 action
+-   把 action 替换之后我们发现，比如 addTodo 就是 dispatch(createAdd(payload))
+    我们可以把这一步写成一个函数 addTodo = (payload) => dispatch(createAdd(payload))
+    我用需要用一个函数实现封装，这个函数接受一个 createAction 的对象和 dispatch 函数，返回对应的操作函数
+    这样我们就把 dispatch 这一步也省略了
+-   因为刚开始只有一个 todos 的属性，新增了之后我们现在还是以 action 的维度，这样有点复杂，我们可以改成数据的维度
+    首先我们抽离一个 reducer 函数，这个函数接受全部数据 state 和 action 参数，返回新的 state，根据不同的 type 操作不同数据放到这里
+-   接着我们写一个 reducers 是一个 hash 表示不同的数据有不同的 reducer，我们用一个 combineReducers 函数返回 REDUCER 函数，
+    在这个函数内部我们遍历 reducers，执行不同的 reducer 函数，最后返回合并后的 state，最后我们把这个 REDUCER 函数导出
+-   到现在为止，我们有两个文件一个 actions 用来创建不同的 action，一个 reducers 生成 reducer 函数，这样
+    我们在父组件中根据不同的 createAction 函数和 dispatch 就可以组合成自己的 add remove toggle 等函数，
+    传给子组件使用，我们在 dispatch 中实现的逻辑就是遍历最新的 state 去 setHooks 就可以了
+-   异步 actions 需要自己获取最新的 state，我们可以用全局变量 store 来保存，用函数获取就可以
